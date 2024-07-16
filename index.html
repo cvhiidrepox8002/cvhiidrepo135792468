@@ -31,8 +31,9 @@
     }
 
     function setYouTubeVideo() {
-      const url = window.location.href.split('/').slice(-1)[0];
-      const videoID = getYouTubeID(url);
+      const urlParams = new URLSearchParams(window.location.search);
+      const videoURL = urlParams.get('video');
+      const videoID = getYouTubeID(videoURL);
       if (videoID) {
         const iframe = document.getElementById('youtube-player');
         iframe.src = `https://www.youtube.com/embed/${videoID}?autoplay=1&loop=1&playlist=${videoID}&controls=0&modestbranding=1&showinfo=0&rel=0&iv_load_policy=3&fs=0&disablekb=1`;
