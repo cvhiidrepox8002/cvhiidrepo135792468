@@ -14,8 +14,9 @@
     background-color: #000;
   }
   #player {
-    width: 80%;
-    height: 80%;
+    width: 100vw;
+    height: 100vh;
+    pointer-events: none; /* Disable pointer events to prevent clicking */
   }
 </style>
 </head>
@@ -47,16 +48,27 @@
             playerVars: {
               autoplay: 1,  // Autoplay the video
               loop: 1,      // Loop the video
+              playlist: videoID,  // Required for looping to work
               controls: 0,  // Hide playback controls
               modestbranding: 1,  // Hide Youtube logo
-              showinfo: 0,    // Hide video info (including title and profile picture)
-              rel: 0,        // Hide related videos
-              iv_load_policy: 3, // Don't load video preview thumbnail
-              fs: 0,          // Disable fullscreen
-              disablekb: 1,   // Disable keyboard controls
-              playsinline: 1  // Play video inline without fullscreen option
+              showinfo: 0,  // Hide video info
+              rel: 0,  // Hide related videos
+              iv_load_policy: 3, // Don't load video annotations
+              fs: 0,  // Disable fullscreen button
+              disablekb: 1,  // Disable keyboard controls
+              playsinline: 1  // Play video inline
             },
-            events: {}  // No events needed for this functionality
+            events: {
+              'onReady': function(event) {
+                event.target.mute(); // Mute the video (optional)
+                event.target.playVideo(); // Start playback
+              },
+              'onStateChange': function(event) {
+                if (event.data === YT.PlayerState.ENDED) {
+                  event.target.playVideo(); // Loop the video
+                }
+              }
+            }
           });
         };
       } else {
