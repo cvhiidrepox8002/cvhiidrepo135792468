@@ -16,7 +16,6 @@
   #player {
     width: 80%;
     height: 80%;
-    pointer-events: none; /* Disable pointer events to prevent clicking */
   }
 </style>
 </head>
@@ -41,32 +40,25 @@
         var firstScriptTag = document.getElementsByTagName('script')[0];
         firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 
-        // Create YouTube player
+        // Create YouTube player with desired options
         window.onYouTubeIframeAPIReady = function() {
           new YT.Player('player', {
             videoId: videoID,
             playerVars: {
-              autoplay: 1,
-              loop: 1,
-              playlist: videoID,
-              controls: 0,
-              modestbranding: 1,
-              showinfo: 0,
-              rel: 0,
-              iv_load_policy: 3,
-              fs: 0,
-              disablekb: 1,
-              playsinline: 1
+              autoplay: 1,  // Autoplay the video
+              loop: 1,      // Loop the video
+              controls: 0,  // Hide playback controls
+              modestbranding: 1,  // Hide Youtube logo
+              showinfo: 0,    // Hide video info
+              rel: 0,        // Hide related videos
+              iv_load_policy: 3, // Don't load video preview thumbnail
+              fs: 0,          // Disable fullscreen
+              disablekb: 1,   // Disable keyboard controls
+              playsinline: 1  // Play video inline without fullscreen option
             },
             events: {
               'onReady': function(event) {
                 event.target.mute(); // Optional: mute the video
-                event.target.playVideo();
-              },
-              'onStateChange': function(event) {
-                if (event.data === YT.PlayerState.ENDED) {
-                  event.target.playVideo(); // Loop the video
-                }
               }
             }
           });
